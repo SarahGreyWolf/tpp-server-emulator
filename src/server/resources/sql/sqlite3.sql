@@ -55,9 +55,9 @@ create table if not exists `player_records`
 )
 -- query:mgstpp.player_records.update_fob_ranking
 with ranked_players as (
-	select player_id, fob_point, 
-		   (select count(distinct fob_point) + 1 
-			from player_records pr2 
+	select player_id, fob_point,
+		   (select count(distinct fob_point) + 1
+			from player_records pr2
 			where pr2.fob_point > pr1.fob_point) as new_rank
 	from player_records pr1
 )
@@ -175,8 +175,8 @@ with ranked as (
         player_id,
         event_id,
         value,
-        case 
-            when value = 0 then 0 
+        case
+            when value = 0 then 0
             else rank() over (partition by event_id order by value desc)
         end as new_rank
     from event_rankings
@@ -247,4 +247,74 @@ create table if not exists `mgo_stat`
 	stat_value				int unsigned	not null,
 	foreign key (`player_id`) references players(`id`),
 	unique (`player_id`, `stat_id`)
+)
+-- query:mgstpp.ops_team.create
+create table if not exists `ops_team`
+(
+    id                      integer primary key autoincrement,
+    armored                 int unsigned default 0 not null,
+    battle_gear             int unsigned default 0 not null,
+    car                     int unsigned default 0 not null,
+    combat_count            int unsigned default 0 not null,
+    combat_rank_bottom      int unsigned default 0 not null,
+    combat_rank_top         int unsigned default 0 not null,
+    dead_rate               int unsigned default 0 not null,
+    is_valid                int unsigned default 0 not null,
+    mission_id              int unsigned default 0 not null,
+    seed                    int unsigned default 0 not null,
+    staff_power             int unsigned default 0 not null,
+    sub_count               int unsigned default 0 not null,
+    sub_rank_bottom         int unsigned default 0 not null,
+    sub_rank_top            int unsigned default 0 not null,
+    tank                    int unsigned default 0 not null,
+    team_id                 int unsigned default 0 not null,
+    team_power              int unsigned default 0 not null,
+    time                    int unsigned default 0 not null,
+    truck                   int unsigned default 0 not null,
+    walker_gear             int unsigned default 0 not null,
+    win_rate                int unsigned default 0 not null,
+    player_id               bigint unsigned not null,
+	foreign key (`player_id`) references players(`id`),
+	foreign key (`mission_id`) references combat_ops(`id`),
+    unique (`player_id`, `mission_id`)
+)
+-- query:mgstpp.combat_ops.create
+create table if not exists `combat_ops`
+(
+    id                      integer primary key autoincrement,
+    armored_max             int unsigned default 0 not null,
+    armored_min             int unsigned default 0 not null,
+    battle_gear             int unsigned default 0 not null,
+    car_max                 int unsigned default 0 not null,
+    car_min                 int unsigned default 0 not null,
+    category                int unsigned default 0 not null,
+    combat_count            int unsigned default 0 not null,
+    combat_rank             int unsigned default 0 not null,
+    dead_rate               int unsigned default 0 not null,
+    is_campaign             boolean default false not null,
+    latitude                int default 0 not null,
+    longitude               int default 0 not null,
+    max_dead_rate           int unsigned default 0 not null,
+    min_dead_rate           int unsigned default 0 not null,
+    max_win_rate            int unsigned default 0 not null,
+    min_win_rate            int unsigned default 0 not null,
+    primary_reward          text default "" not null,
+    name_key                int unsigned default 0 not null,
+    reward                  int unsigned default 0 not null,
+    section                 int unsigned default 0 not null,
+    section_count           int unsigned default 0 not null,
+    section_rank            int unsigned default 0 not null,
+    seed                    int unsigned default 0 not null,
+    server_text_id          int unsigned default 0 not null,
+    tank_max                int unsigned default 0 not null,
+    tank_min                int unsigned default 0 not null,
+    time                    int unsigned default 0 not null,
+    time_random             int unsigned default 0 not null,
+    truck_max               int unsigned default 0 not null,
+    truck_min               int unsigned default 0 not null,
+    walker_gear_max         int unsigned default 0 not null,
+    walker_gear_min         int unsigned default 0 not null,
+    win_rate                int unsigned default 0 not null,
+    team_id                 bigint unsigned,
+    foreign key (`team_id`) references ops_team(`id`)
 )
