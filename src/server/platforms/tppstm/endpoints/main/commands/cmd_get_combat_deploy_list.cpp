@@ -2,61 +2,53 @@
 
 #include "cmd_get_combat_deploy_list.hpp"
 
-namespace emulator::tpp
-{
-nlohmann::json cmd_get_combat_deploy_list::execute(nlohmann::json &data, const std::optional<database::players::player> &player)
-{
+#include "database/models/combat_ops.hpp"
+#include "database/models/ops_team.hpp"
+
+namespace emulator::tpp {
+nlohmann::json cmd_get_combat_deploy_list::execute(
+    nlohmann::json &data,
+    const std::optional<database::players::player> &player) {
     nlohmann::json result;
 
-    nlohmann::json mission_list[1];
+    auto ops = database::combat_ops::get_ops();
+
+    nlohmann::json mission_list[100];
     int count = 0;
 
-    for (int i = 0; i < 1; i++)
-    {
+    for (database::combat_ops::combat_ops op : ops) {
         nlohmann::json mission;
-        mission["armored_max"] = 0;
-        mission["armored_min"] = 0;
-        mission["battle_gear"] = 1;
-        mission["car_max"] = 0;
-        mission["car_min"] = 0;
-        mission["category"] = 7;
-        mission["combat_count"] = 20;
-        mission["combat_rank"] = 7;
-        mission["dead_rate"] = 0;
-        mission["is_campaign"] = 1;
-        mission["latitude"] = -18300;
-        mission["longitude"] = 15500;
-        mission["max_dead_rate"] = 100;
-        mission["min_dead_rate"] = 0;
-        mission["max_win_rate"] = 100;
-        mission["min_win_rate"] = 0;
-        mission["mission_id"] = 407;
+
+        mission["armored_max"] = op.get_armored_max();
+        mission["armored_min"] = op.get_armored_min();
+        mission["battle_gear"] = op.get_battle_gear();
+        mission["car_max"] = op.get_car_max();
+        mission["car_min"] = op.get_car_min();
+        mission["category"] = op.get_category();
+        mission["combat_count"] = op.get_combat_count();
+        mission["combat_rank"] = op.get_combat_rank();
+        mission["dead_rate"] = op.get_dead_rate();
+        mission["is_campaign"] = op.get_is_campaign();
+        mission["latitude"] = op.get_latitude();
+        mission["longitude"] = op.get_longitude();
+        mission["max_dead_rate"] = op.get_max_dead_rate();
+        mission["min_dead_rate"] = op.get_min_dead_rate();
+        mission["max_win_rate"] = op.get_max_win_rate();
+        mission["min_win_rate"] = op.get_min_win_rate();
+        mission["mission_id"] = op.get_mission_id();
         mission["name_key"] = mission["category"];
+        // printf("%s\n", op.get_primary_reward().c_str());
 
-        nlohmann::json rewards[2];
-        rewards[0]["bottom_type"] = 1;
-        rewards[0]["mecha_type"] = 0;
-        rewards[0]["rate"] = 1000000;
-        rewards[0]["section"] = 0;
-        rewards[0]["type"] = 1;
-        rewards[0]["value"] = 2100000;
-
-        rewards[1]["bottom_type"] = 12;
-        rewards[1]["mecha_type"] = 0;
-        rewards[1]["rate"] = 1000000;
-        rewards[1]["section"] = 0;
-        rewards[1]["type"] = 12;
-        rewards[1]["value"] = 500;
-
-        mission["primary_reward"] = rewards;
+        mission["primary_reward"] =
+            nlohmann::json::parse(op.get_primary_reward());
         mission["reward"] = mission["primary_reward"][0]["type"];
-        mission["section"] = 4;
-        mission["section_count"] = 20;
-        mission["section_rank"] = 2;
-        mission["seed"] = 28980;
-        mission["server_text_id"] = 0;
-        mission["tank_max"] = 0;
-        mission["tank_min"] = 0;
+        mission["section"] = op.get_section();
+        mission["section_count"] = op.get_section_count();
+        mission["section_rank"] = op.get_section_rank();
+        mission["seed"] = op.get_seed();
+        mission["server_text_id"] = op.get_server_text_id();
+        mission["tank_max"] = op.get_tank_max();
+        mission["tank_min"] = op.get_tank_min();
 
         nlohmann::json team;
         team["armored"] = 0;
@@ -82,19 +74,21 @@ nlohmann::json cmd_get_combat_deploy_list::execute(nlohmann::json &data, const s
         team["win_rate"] = 0;
 
         mission["team"] = team;
-        mission["time"] = 1;
-        mission["time_random"] = 0;
-        mission["truck_max"] = 0;
-        mission["truck_min"] = 0;
-        mission["walker_gear_max"] = 0;
-        mission["walker_gear_min"] = 0;
-        mission["win_rate"] = 100;
+        // mission["team"] = op.get_team();
+        mission["time"] = op.get_time();
+        mission["time_random"] = op.get_time_random();
+        mission["truck_max"] = op.get_truck_max();
+        mission["truck_min"] = op.get_truck_min();
+        mission["walker_gear_max"] = op.get_walker_gear_max();
+        mission["walker_gear_min"] = op.get_walker_gear_min();
+        mission["win_rate"] = op.get_win_rate();
+        printf("%s\n", mission.dump().c_str());
         mission_list[count++] = mission;
     }
 
     result["result"] = "NOERR";
     result["mission_list"] = mission_list;
-    result["mission_num"] = count;
+    result["mission_num"] = ops.size();
 
     return result;
 }

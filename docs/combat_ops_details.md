@@ -28,7 +28,7 @@
                 {
                     "bottom_type": 2, // Just seems to match the type
                     "mecha_type": 0, // For some rewards seems to indicate a subcategory (Like the missiles) otherwise 0
-                    "rate": 1000000, // Possibly Acquisition Probability(?)
+                    "rate": 1000000, // Possibly Acquisition Probability
                     "section": 2, // Another subcategory indicator, may be staff only, is 0 for anything else
                     "type": 2, // See Reward Types
                     "value": 20 // How many/much of the reward you get (5 soldiers/20,000 GMP)
