@@ -28,12 +28,6 @@ class table final : public table_interface {
 public:
     void create(database_t &database) override {
         database.run_query("mgstpp.combat_ops.create");
-        if (database.get_sqlite3()) {
-            database.execute(
-                "UPDATE SQLITE_SEQUENCE SET seq = 1 WHERE name = 'combat_ops'");
-        } else {
-            database.execute("ALTER TABLE combat_ops AUTO_INCREMENT=1001");
-        }
     }
 };
 

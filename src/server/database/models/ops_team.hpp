@@ -29,7 +29,6 @@ public:
     DEFINE_FIELD(sub_rank_bottom, sqlpp::integer_unsigned);
     DEFINE_FIELD(sub_rank_top, sqlpp::integer_unsigned);
     DEFINE_FIELD(tank, sqlpp::integer_unsigned);
-    DEFINE_FIELD(team_id, sqlpp::integer_unsigned);
     DEFINE_FIELD(team_power, sqlpp::integer_unsigned);
     DEFINE_FIELD(time, sqlpp::integer_unsigned);
     DEFINE_FIELD(truck, sqlpp::integer_unsigned);
@@ -41,9 +40,9 @@ public:
                  combat_rank_top_field_t, dead_rate_field_t, is_valid_field_t,
                  mission_id_field_t, seed_field_t, staff_power_field_t,
                  sub_count_field_t, sub_rank_bottom_field_t,
-                 sub_rank_top_field_t, tank_field_t, team_id_field_t,
-                 team_power_field_t, time_field_t, truck_field_t,
-                 walker_gear_field_t, win_rate_field_t, player_id_field_t);
+                 sub_rank_top_field_t, tank_field_t, team_power_field_t,
+                 time_field_t, truck_field_t, walker_gear_field_t,
+                 win_rate_field_t, player_id_field_t);
 
     inline static table_t table;
 
@@ -65,7 +64,6 @@ public:
         this->sub_rank_bottom_ = row.sub_rank_bottom;
         this->sub_rank_top_ = row.sub_rank_top;
         this->tank_ = row.tank;
-        this->team_id_ = row.team_id;
         this->team_power_ = row.team_power;
         this->time_ = row.time;
         this->truck_ = row.truck;
