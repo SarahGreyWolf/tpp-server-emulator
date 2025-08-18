@@ -262,7 +262,7 @@ create table if not exists `ops_team`
     combat_rank_bottom      int unsigned default 0 not null,
     combat_rank_top         int unsigned default 0 not null,
     dead_rate               int unsigned default 0 not null,
-    is_valid                int unsigned default 0 not null,
+    is_valid                boolean default false not null,
     mission_id              int unsigned default 0 not null,
     seed                    int unsigned default 0 not null,
     staff_power             int unsigned default 0 not null,
