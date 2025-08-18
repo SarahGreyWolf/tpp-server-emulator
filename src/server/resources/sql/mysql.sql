@@ -294,7 +294,6 @@ create table if not exists `ops_team`
     sub_rank_bottom         int unsigned default 0 not null,
     sub_rank_top            int unsigned default 0 not null,
     tank                    int unsigned default 0 not null,
-    team_id                 int unsigned default 0 not null,
     team_power              int unsigned default 0 not null,
     time                    int unsigned default 0 not null,
     truck                   int unsigned default 0 not null,
