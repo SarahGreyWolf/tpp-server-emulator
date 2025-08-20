@@ -338,4 +338,8 @@ create table if not exists `combat_ops`
     win_rate                int unsigned default 0 not null,
     team_id                 bigint unsigned,
     foreign key (`team_id`) references ops_team(`id`)
+<<<<<<< HEAD
 )
+=======
+)
+>>>>>>> 51d64d70cc5312e10014184d9f34613fdb572adb
